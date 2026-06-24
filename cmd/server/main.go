@@ -8,9 +8,9 @@ import (
 
 func main() {
 
-	value, found, err := sstable.Search(
-		"data/sstable_1.txt",
-		"2",
+	value, found, err := sstable.SearchAll(
+		"data",
+		"4",
 	)
 
 	if err != nil {
