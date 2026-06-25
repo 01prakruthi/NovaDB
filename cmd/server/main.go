@@ -3,18 +3,24 @@ package main
 import (
 	"fmt"
 
-	"novadb1/internal/bloom"
+	"novadb1/internal/mvcc"
 )
 
 func main() {
 
-	bf := bloom.New(100)
+	store := mvcc.New()
 
-	bf.Add("2")
-	bf.Add("4")
-	bf.Add("5")
+	store.Put("2", "Bob", 100)
+	store.Put("2", "Robert", 200)
+	store.Put("2", "Bobby", 300)
 
-	fmt.Println("Contains 2:", bf.MightContain("2"))
-	fmt.Println("Contains 4:", bf.MightContain("4"))
-	fmt.Println("Contains 99:", bf.MightContain("99"))
+	tx := mvcc.NewTransaction(250)
+
+	value, found := tx.Read(
+		store,
+		"2",
+	)
+
+	fmt.Println("Snapshot Value:", value)
+	fmt.Println("Found:", found)
 }
