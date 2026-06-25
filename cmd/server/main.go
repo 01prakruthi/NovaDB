@@ -3,20 +3,18 @@ package main
 import (
 	"fmt"
 
-	"novadb1/internal/sstable"
+	"novadb1/internal/bloom"
 )
 
 func main() {
 
-	value, found, err := sstable.SearchAll(
-		"data",
-		"4",
-	)
+	bf := bloom.New(100)
 
-	if err != nil {
-		panic(err)
-	}
+	bf.Add("2")
+	bf.Add("4")
+	bf.Add("5")
 
-	fmt.Println("Value:", value)
-	fmt.Println("Found:", found)
+	fmt.Println("Contains 2:", bf.MightContain("2"))
+	fmt.Println("Contains 4:", bf.MightContain("4"))
+	fmt.Println("Contains 99:", bf.MightContain("99"))
 }
